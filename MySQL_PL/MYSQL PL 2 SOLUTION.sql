@@ -1,0 +1,141 @@
+/*EXERCISE 2*/
+CREATE TABLE OUTPUT(
+LABLE VARCHAR(15),
+ANS FLOAT
+);
+DROP TABLE OUTPUT;
+
+/*1. Select from any table a number and determine whether 
+it is within a given range (for example, between 1 and 10).*/
+DELIMITER //
+CREATE PROCEDURE RANGECHECK(Y TINYINT)
+BEGIN
+	DECLARE X INT;
+    SELECT SAL INTO X FROM EMP1
+    WHERE EMPNO=Y;
+    IF(x>=3000 AND x<8000) THEN
+		INSERT INTO OUTPUT VALUES ('IN RANGE', X);
+	ELSE 
+		INSERT INTO OUTPUT VALUES ('OUT OF RANGE', X);
+	END IF;
+END; //
+DELIMITER ;
+CALL RANGECHECK(4);
+DROP PROCEDURE RANGECHECK;
+SELECT * FROM OUTPUT;
+TRUNCATE OUTPUT;
+
+
+/*2. Select from any table three positive integers representing the sides of a triangle, and determine whether they form a valid triangle. 
+Hint: In a triangle, the sum of any two sides must always be greater than the third side.*/
+CREATE TABLE SIDES
+(
+	A INT,
+    B INT,
+    C INT
+);
+
+INSERT INTO SIDES VALUES
+(3, 4, 5),
+(1, 2 ,3),
+(34, 33, 79);
+
+DELIMITER //
+CREATE PROCEDURE TRIANGLE()
+BEGIN
+	DECLARE X INT;
+    DECLARE Y INT;
+    DECLARE Z INT;
+    DECLARE H INT DEFAULT 0;
+    DECLARE CU CURSOR FOR SELECT * FROM SIDES;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND 
+		SET H=1;
+	OPEN CU;
+		CU_LOOP: LOOP
+			FETCH CU INTO X, Y, Z;
+            IF (H=1) THEN
+				LEAVE CU_LOOP;
+			END IF;
+			IF ((X+Y>Z) AND (Y+Z>X) AND (Z+X>Y)) THEN
+				INSERT INTO OUTPUT VALUES ('TRIANGLE', NULL);
+			ELSE
+				INSERT INTO OUTPUT VALUES ('NOT TRIANGLE', NULL);
+			END IF;
+		END LOOP CU_LOOP;
+	CLOSE CU;
+END; //
+DELIMITER ;
+CALL TRIANGLE();
+DROP PROCEDURE TRIANGLE;
+SELECT * FROM SIDES;
+TRUNCATE OUTPUT;
+
+
+/*3. Check if a given a year is a leap year. 
+The condition is:- year should be (divisible by 4 and not divisible by 100) or (divisible by 4 and divisible by 400.). 
+The year should be Selected from some table.*/
+DELIMITER //
+CREATE PROCEDURE LEAP()
+BEGIN
+	DECLARE EDATE DATE;
+	DECLARE EAR YEAR;
+    DECLARE Y INT DEFAULT 0;
+    DECLARE CU CURSOR FOR SELECT YEAR(HIREDATE) FROM DATES_TEMP;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET Y=1;
+    OPEN CU;
+		CU_LOOP:LOOP
+			IF Y=1 THEN
+				LEAVE CU_LOOP;
+			END IF;
+            FETCH CU INTO EAR;
+            IF (MOD(EAR,4)=0 AND MOD(EAR, 100)!=0) OR (MOD(EAR,4)=0 AND MOD(EAR, 400)=0) THEN
+				INSERT INTO OUTPUT VALUES ('LEAP YEAR', EAR);
+			ELSE
+				INSERT INTO OUTPUT VALUES ('NOT LEAP YEAR', EAR);
+            END IF;
+		END LOOP CU_LOOP;
+	CLOSE CU;
+END; //
+DELIMITER ;
+CALL LEAP();
+SELECT * FROM OUTPUT;
+TRUNCATE OUTPUT;
+
+
+/*4. Write a program that Selects from any table two character strings. Your program should then determine if one character string exists inside another character string.*/
+CREATE TABLE STR
+(
+	STR1 VARCHAR(15),
+    STR2 VARCHAR(15)
+);
+INSERT INTO STR VALUES
+('DEVI', 'EV'),
+('DEVI', 'DINESH'),
+('BHAVYA', 'BHA');
+DELIMITER //
+CREATE PROCEDURE SUBSTRG()
+BEGIN
+	DECLARE S1 VARCHAR(15);
+    DECLARE S2 VARCHAR(15);
+    DECLARE X INT DEFAULT 0;
+    DECLARE H INT DEFAULT 0;
+    DECLARE CU CURSOR FOR SELECT *,INSTR(STR1, STR2) FROM STR WHERE INSTR(STR1, STR2)>0;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET H=1;
+    OPEN CU;
+		CU_LOOP:LOOP
+			FETCH CU INTO S1, S2,X;
+            IF(H=1) THEN
+				LEAVE CU_LOOP;
+            END IF;
+            INSERT INTO OUTPUT VALUES ('FOUND',X);
+		END LOOP CU_LOOP;
+    CLOSE CU;
+END;//
+DELIMITER ;
+DROP PROCEDURE SUBSTRG;
+CALL SUBSTRG();
+SELECT INSTR('DEVI', 'VI') FROM DUAL;
+SELECT * FROM OUTPUT;
+TRUNCATE OUTPUT;
+
+
