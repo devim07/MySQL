@@ -1,0 +1,178 @@
++------+--------+--------+--------+--------+------+
+| P#   | PNAME  | COLOR  | WEIGHT | CITY   | QTY  |
++------+--------+--------+--------+--------+------+
+| P1   | PRT 1  | BLUE   |    2.5 | ATHENS |    5 |
+| P2   | PRT 2  | RED    |      1 | PARIS  |    4 |
+| P3   | PRT 3  | YELLOW |   3.25 | LONDON |    3 |
+| P4   | PRT 1  | GREEN  |    0.5 | PARIS  |    7 |
+| P5   | PRT 4  | WHITE  |      4 | ATHENS |    6 |
+| P6   | PRT 5  | BLUE   |    2.5 | BERLIN |    5 |
+| P7   | PRT 11 | YELLOW |    7.1 | PARIS  |    3 |
+| P8   | PRT 5  | BLACK  |      2 | BERLIN |    8 |
+| P9   | PRT 7  | RED    |    3.5 | ATHENS |    4 |
+| P10  | PRT 10 | BLUE   |      4 | LONDON |    5 |
++------+--------+--------+--------+--------+------+
+
+
+1. Display the minimum Status in the Supplier table.
+SELECT MIN(STATUS) FROM S;
+----->
+		+-------------+
+		| MIN(STATUS) |
+		+-------------+
+		|          10 |
+		+-------------+
+		1 row in set (0.02 sec)
+
+================================================================================================
+2. Display the maximum Weight in the Parts table.
+SELECT MAX(WEIGHT) FROM P;
+----->
+		+-------------+
+		| MAX(WEIGHT) |
+		+-------------+
+		|         7.1 |
+		+-------------+
+		1 row in set (0.02 sec)
+		
+=================================================================================================
+3. Display the average Weight of the Parts.
+SELECT AVG(WEIGHT) FROM P;
+----->
+		+--------------------+
+		| AVG(WEIGHT)        |
+		+--------------------+
+		| 3.0349999904632567 |
+		+--------------------+
+		1 row in set (0.01 sec)
+		
+=================================================================================================
+4. Display the total Quantity sold for part ‘PRT 1’.
+SELECT SUM(QTY) FROM P
+WHERE PNAME='PRT 1';
+----->
+		+----------+
+		| SUM(QTY) |
+		+----------+
+		|       12 |
+		+----------+
+		1 row in set (0.01 sec)
+		
+==================================================================================================
+5. Display the total Quantity sold for each part.
+SELECT PNAME,SUM(QTY) AS "TOTAL QTY" FROM P
+GROUP BY PNAME;
+----->
+		+--------+-----------+
+		| PNAME  | TOTAL QTY |
+		+--------+-----------+
+		| PRT 1  |        12 |
+		| PRT 2  |         4 |
+		| PRT 3  |         3 |
+		| PRT 4  |         6 |
+		| PRT 5  |        13 |
+		| PRT 11 |         3 |
+		| PRT 7  |         4 |
+		| PRT 10 |         5 |
+		+--------+-----------+
+		8 rows in set (0.00 sec)
+		
+=====================================================================================================
+6. Display the average Quantity sold for each part.
+SELECT PNAME, AVG(QTY) AS "TOTAL QTY" FROM P
+GROUP BY PNAME;
+----->
+		+--------+-----------+
+		| PNAME  | TOTAL QTY |
+		+--------+-----------+
+		| PRT 1  |    6.0000 |
+		| PRT 2  |    4.0000 |
+		| PRT 3  |    3.0000 |
+		| PRT 4  |    6.0000 |
+		| PRT 5  |    6.5000 |
+		| PRT 11 |    3.0000 |
+		| PRT 7  |    4.0000 |
+		| PRT 10 |    5.0000 |
+		+--------+-----------+
+		8 rows in set (0.01 sec)
+		
+=====================================================================================================
+7. Display the maximum Quantity sold for each part, provided the maximum Quantity is greater than 5.
+SELECT PNAME, TOTAL FROM
+(SELECT PNAME, SUM(QTY) AS TOTAL FROM P
+GROUP BY PNAME) AS N
+WHERE TOTAL>5;
+----->
+		+-------+-------+
+		| PNAME | TOTAL |
+		+-------+-------+
+		| PRT 1 |    12 |
+		| PRT 4 |     6 |
+		| PRT 5 |    13 |
+		+-------+-------+
+		3 rows in set (0.00 sec)
+	
+======================================================================================================
+8. Display the Status and the count of Suppliers with that Status.
+SELECT STATUS , COUNT(SNAME) AS "No. of Suppliers" FROM S
+GROUP BY STATUS
+ORDER BY STATUS;
+----->
+		+--------+------------------+
+		| STATUS | No. of Suppliers |
+		+--------+------------------+
+		|     10 |                5 |
+		|     20 |                1 |
+		|     30 |                2 |
+		|     40 |                1 |
+		|     50 |                1 |
+		+--------+------------------+
+		5 rows in set (0.00 sec)
+		
+=======================================================================================================
+9. Display the count of Projects going on in different cities.
+SELECT CITY, COUNT(JNAME) AS "No. of Projects" FROM J
+GROUP BY CITY
+ORDER BY CITY;
+----->
+		+--------+-----------------+
+		| CITY   | No. of Projects |
+		+--------+-----------------+
+		| ATHENS |               1 |
+		| BERLIN |               2 |
+		| LONDON |               2 |
+		| PARIS  |               1 |
+		+--------+-----------------+
+		4 rows in set (0.01 sec)
+		
+=======================================================================================================
+11. Display the Status and the Count of Suppliers with that Status in the following format as shown below:-
+Status Count
+Ten 1
+Twenty 2
+Thirty 3
+
+SELECT NEWSTATUS, COUNT(NEWSTATUS) FROM
+(
+	SELECT CASE
+    WHEN `STATUS`=10 THEN 'TEN'
+    WHEN `STATUS`=20 THEN 'TWENTY'
+    WHEN `STATUS`=30 THEN 'THIRTY'
+    WHEN `STATUS`=40 THEN 'FOURTY'
+    WHEN `STATUS`=50 THEN 'FIFTY'
+    END AS "NEWSTATUS"
+    FROM S) AS X
+GROUP BY NEWSTATUS;
+----->
+		+-----------+------------------+
+		| NEWSTATUS | COUNT(NEWSTATUS) |
+		+-----------+------------------+
+		| TEN       |                5 |
+		| FOURTY    |                1 |
+		| TWENTY    |                1 |
+		| FIFTY     |                1 |
+		| THIRTY    |                2 |
+		+-----------+------------------+
+		5 rows in set (0.00 sec)
+		
+=============================================================================================================

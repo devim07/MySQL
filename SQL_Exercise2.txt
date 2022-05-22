@@ -1,0 +1,142 @@
+1. Display the Supplier table in the descending order of CITY.
+SELECT * FROM S
+ORDER BY CITY DESC;
+----->
+		+------+-------+--------+--------+
+		| S#   | SNAME | STATUS | CITY   |
+		+------+-------+--------+--------+
+		| S2   | SUP 2 |     10 | PARIS  |
+		| S7   | SUP 2 |     30 | PARIS  |
+		| S1   | SUP 1 |     10 | LONDON |
+		| S5   | SUP 1 |     20 | LONDON |
+		| S8   | SUP 1 |     10 | LONDON |
+		| S4   | SUP 4 |     10 | BERLIN |
+		| S9   | SUP 4 |     30 | BERLIN |
+		| S3   | SUP 3 |     40 | ATHENS |
+		| S6   | SUP 3 |     50 | ATHENS |
+		| S10  | SUP 3 |     10 | ATHENS |
+		+------+-------+--------+--------+
+		10 rows in set (0.00 sec)
+		
+--------------------------------------------------------------------------------
+2. Display the Part Table in the ascending order of CITY and within the city in the ascending order of Part names.
+SELECT * FROM P
+ORDER BY CITY, PNAME;
+----->
+		+------+--------+--------+--------+--------+
+		| P#   | PNAME  | COLOR  | WEIGHT | CITY   |
+		+------+--------+--------+--------+--------+
+		| P1   | PRT 1  | BLUE   |    2.5 | ATHENS |
+		| P5   | PRT 4  | WHITE  |      4 | ATHENS |
+		| P9   | PRT 7  | RED    |    3.5 | ATHENS |
+		| P6   | PRT 5  | BLUE   |    2.5 | BERLIN |
+		| P8   | PRT 5  | BLACK  |      2 | BERLIN |
+		| P10  | PRT 10 | BLUE   |      4 | LONDON |
+		| P3   | PRT 3  | YELLOW |   3.25 | LONDON |
+		| P4   | PRT 1  | GREEN  |    0.5 | PARIS  |
+		| P7   | PRT 11 | YELLOW |    7.1 | PARIS  |
+		| P2   | PRT 2  | RED    |      1 | PARIS  |
+		+------+--------+--------+--------+--------+
+		10 rows in set (0.00 sec)
+		
+---------------------------------------------------------------------------------------
+3. Display all the Suppliers with a status between 10 and 20.
+SELECT * FROM S
+WHERE `STATUS`>=10 AND `STATUS`<=20;
+
+SELECT * FROM S
+WHERE `STATUS`BETWEEN 10 AND 20;
+----->
+		+------+-------+--------+--------+
+		| S#   | SNAME | STATUS | CITY   |
+		+------+-------+--------+--------+
+		| S1   | SUP 1 |     10 | LONDON |
+		| S2   | SUP 2 |     10 | PARIS  |
+		| S4   | SUP 4 |     10 | BERLIN |
+		| S5   | SUP 1 |     20 | LONDON |
+		| S8   | SUP 1 |     10 | LONDON |
+		| S10  | SUP 3 |     10 | ATHENS |
+		+------+-------+--------+--------+
+		6 rows in set (0.00 sec)
+		
+---------------------------------------------------------------------------------------
+4. Display all the Parts and their Weight, which are not in the range of 10 and 15.
+SELECT PNAME, WEIGHT FROM P
+WHERE WEIGHT NOT BETWEEN 1 AND 1.5;
+
+SELECT PNAME, WEIGHT FROM P
+WHERE WEIGHT<1 OR WEIGHT>1.5;
+----->
+		+--------+--------+
+		| PNAME  | WEIGHT |
+		+--------+--------+
+		| PRT 1  |    2.5 |
+		| PRT 3  |   3.25 |
+		| PRT 1  |    0.5 |
+		| PRT 4  |      4 |
+		| PRT 5  |    2.5 |
+		| PRT 11 |    7.1 |
+		| PRT 5  |      2 |
+		| PRT 7  |    3.5 |
+		| PRT 10 |      4 |
+		+--------+--------+
+		9 rows in set (0.00 sec)
+		
+-------------------------------------------------------------------------------------------
+5. Display all the Part names starting with the letter ‘S’.
+SELECT PNAME FROM P
+WHERE PNAME>='S' AND PNAME<'T';
+----->
+		Empty set (0.00 sec)
+
+SELECT PNAME FROM P
+WHERE PNAME LIKE 'A%';
+----->
+		Empty set (0.00 sec)
+
+SELECT PNAME FROM P
+WHERE PNAME LIKE 'p%';
+----->
+		+--------+
+		| PNAME  |
+		+--------+
+		| PRT 1  |
+		| PRT 2  |
+		| PRT 3  |
+		| PRT 1  |
+		| PRT 4  |
+		| PRT 5  |
+		| PRT 11 |
+		| PRT 5  |
+		| PRT 7  |
+		| PRT 10 |
+		+--------+
+		10 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------
+6. Display all the Suppliers, belonging to cities starting with the letter ‘L’.
+SELECT SNAME, CITY FROM S
+WHERE CITY LIKE 'L%';
+----->
+		+-------+--------+
+		| SNAME | CITY   |
+		+-------+--------+
+		| SUP 1 | LONDON |
+		| SUP 1 | LONDON |
+		| SUP 1 | LONDON |
+		+-------+--------+
+		3 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------
+7. Display all the Projects, with the sixth letter in JNAME as ‘1’.
+SELECT JNAME FROM J
+WHERE JNAME LIKE '_____1';
+----->
+		+--------+
+		| JNAME  |
+		+--------+
+		| PROJ 1 |
+		+--------+
+		1 row in set (0.00 sec)
+		
+------------------------------------------------------------------------------------------------

@@ -1,0 +1,206 @@
+1. Display all the Supplier names with the initial letter capital.
+
+SELECT CONCAT(UPPER(SUBSTR(SNAME,1,1)), LOWER(SUBSTR(SNAME,2))) AS "INITCAP" FROM S;
+----->
+		+---------+
+		| INITCAP |
+		+---------+
+		| Sup 1   |
+		| Sup 2   |
+		| Sup 3   |
+		| Sup 4   |
+		| Sup 1   |
+		| Sup 3   |
+		| Sup 2   |
+		| Sup 1   |
+		| Sup 4   |
+		| Sup 3   |
+		+---------+
+		10 rows in set (0.00 sec)
+
+=================================================================================================================
+2. Display all the Supplier names in upper case.
+SELECT UPPER(SNAME) FROM S;
+----->
+		+--------------+
+		| UPPER(SNAME) |
+		+--------------+
+		| SUP 1        |
+		| SUP 2        |
+		| SUP 3        |
+		| SUP 4        |
+		| SUP 1        |
+		| SUP 3        |
+		| SUP 2        |
+		| SUP 1        |
+		| SUP 4        |
+		| SUP 3        |
+		+--------------+
+		10 rows in set (0.00 sec)
+		
+=================================================================================================================
+3. Display all the Supplier names in lower case.
+SELECT LOWER(SNAME) FROM S;
+----->
+		+--------------+
+		| LOWER(SNAME) |
+		+--------------+
+		| sup 1        |
+		| sup 2        |
+		| sup 3        |
+		| sup 4        |
+		| sup 1        |
+		| sup 3        |
+		| sup 2        |
+		| sup 1        |
+		| sup 4        |
+		| sup 3        |
+		+--------------+
+		10 rows in set (0.00 sec)
+		
+================================================================================================================
+4. Display all the Supplier names padded to 25 characters, with spaces on the left.
+SELECT LPAD(SNAME, 25,' ')AS "RIGHT JUSTIFIED" FROM S;
+----->
+		+---------------------------+
+		| RIGHT JUSTIFIED           |
+		+---------------------------+
+		|                     SUP 1 |
+		|                     SUP 2 |
+		|                     SUP 3 |
+		|                     SUP 4 |
+		|                     SUP 1 |
+		|                     SUP 3 |
+		|                     SUP 2 |
+		|                     SUP 1 |
+		|                     SUP 4 |
+		|                     SUP 3 |
+		+---------------------------+
+		10 rows in set (0.00 sec)
+		
+=============================================================================================================
+5. Display all the Supplier names (with ‘3’ replaced by ‘30’). HINT: REPLACE.
+SELECT REPLACE(SNAME,'3','30') AS "NEW SNAME" FROM S;
+----->
+		+-----------+
+		| NEW SNAME |
+		+-----------+
+		| SUP 1     |
+		| SUP 2     |
+		| SUP 30    |
+		| SUP 4     |
+		| SUP 1     |
+		| SUP 30    |
+		| SUP 2     |
+		| SUP 1     |
+		| SUP 4     |
+		| SUP 30    |
+		+-----------+
+		10 rows in set (0.00 sec)
+
+===============================================================================================================
+6. Implement the above command such that ‘U’ is replaced with ‘A’ and ‘3’ is replaced with ‘0’.
+SELECT REPLACE(REPLACE(SNAME,'3','0'), 'U','A') AS "NEW SNAME" FROM S;
+----->
+		+-----------+
+		| NEW SNAME |
+		+-----------+
+		| SAP 1     |
+		| SAP 2     |
+		| SAP 0     |
+		| SAP 4     |
+		| SAP 1     |
+		| SAP 0     |
+		| SAP 2     |
+		| SAP 1     |
+		| SAP 4     |
+		| SAP 0     |
+		+-----------+
+		10 rows in set (0.00 sec)
+		
+================================================================================================================
+7. Display the Supplier names and the lengths of the names.
+SELECT SNAME AS "SUPPLIER NAME", LENGTH(SNAME) AS "LENGTH" FROM S;
+----->
+		+---------------+--------+
+		| SUPPLIER NAME | LENGTH |
+		+---------------+--------+
+		| SUP 1         |      5 |
+		| SUP 2         |      5 |
+		| SUP 3         |      5 |
+		| SUP 4         |      5 |
+		| SUP 1         |      5 |
+		| SUP 3         |      5 |
+		| SUP 2         |      5 |
+		| SUP 1         |      5 |
+		| SUP 4         |      5 |
+		| SUP 3         |      5 |
+		+---------------+--------+
+		10 rows in set (0.00 sec)
+		
+==================================================================================================================
+8. Use the soundex function to search for a supplier by the name of ‘BLOKE’.
+SELECT * FROM S
+    -> WHERE SOUNDEX(SNAME)=SOUNDEX('SPP');
+----->
+		+------+-------+--------+--------+
+		| S#   | SNAME | STATUS | CITY   |
+		+------+-------+--------+--------+
+		| S1   | SUP 1 |     10 | LONDON |
+		| S2   | SUP 2 |     10 | PARIS  |
+		| S3   | SUP 3 |     40 | ATHENS |
+		| S4   | SUP 4 |     10 | BERLIN |
+		| S5   | SUP 1 |     20 | LONDON |
+		| S6   | SUP 3 |     50 | ATHENS |
+		| S7   | SUP 2 |     30 | PARIS  |
+		| S8   | SUP 1 |     10 | LONDON |
+		| S9   | SUP 4 |     30 | BERLIN |
+		| S10  | SUP 3 |     10 | ATHENS |
+		+------+-------+--------+--------+
+		10 rows in set (0.00 sec)
+		
+SELECT * FROM S
+    -> WHERE SOUNDEX(CITY)=SOUNDEX('LANDAN');
+----->
+		+------+-------+--------+--------+
+		| S#   | SNAME | STATUS | CITY   |
+		+------+-------+--------+--------+
+		| S1   | SUP 1 |     10 | LONDON |
+		| S5   | SUP 1 |     20 | LONDON |
+		| S8   | SUP 1 |     10 | LONDON |
+		+------+-------+--------+--------+
+		3 rows in set (0.00 sec)
+		
+======================================================================================================================
+9. Display the Supplier name and the status (as Ten, Twenty, Thirty, etc.).
+
+SELECT SNAME, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(`STATUS`, 50,'FIFTY'),40,'FOURTY'),30,'THIRTY'),20,'TWENTY'), 10,'TEN') AS "STATUS IN WORDS" FROM S;
+----->
+		+-------+-----------------+
+		| SNAME | STATUS IN WORDS |
+		+-------+-----------------+
+		| SUP 1 | TEN             |
+		| SUP 2 | TEN             |
+		| SUP 3 | FOURTY          |
+		| SUP 4 | TEN             |
+		| SUP 1 | TWENTY          |
+		| SUP 3 | FIFTY           |
+		| SUP 2 | THIRTY          |
+		| SUP 1 | TEN             |
+		| SUP 4 | THIRTY          |
+		| SUP 3 | TEN             |
+		+-------+-----------------+
+		10 rows in set (0.00 sec)
+		
+========================================================================================================================
+10. Display the current day (e.g. Thursday).
+
+SELECT DAYNAME(SYSDATE()) FROM DUAL;
+		+--------------------+
+		| DAYNAME(SYSDATE()) |
+		+--------------------+
+		| Wednesday          |
+		+--------------------+
+		1 row in set (0.00 sec)
+		
+=========================================================================================================================

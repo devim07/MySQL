@@ -1,0 +1,374 @@
+1.
+CREATE TABLE SEMP
+(
+EMPNO CHAR(4),
+EMPNAME VARCHAR(20),
+BASIC FLOAT,
+DEPTNO CHAR(2),
+DEPTHEAD CHAR(4)
+);
+----->
+		3	2	09:02:00	CREATE TABLE SEMP
+		 (
+		 EMPNO CHAR(4),
+		 EMPNAME VARCHAR(20),
+		 BASIC FLOAT,
+		 DEPTNO CHAR(2),
+		 DEPTHEAD CHAR(4)
+		 )	0 row(s) affected	0.078 sec
+ 
+--------------------------------------------------------------------
+2. 
+CREATE TABLE SDEPT
+(
+DEPTNO CHAR(2),
+DEPTNAME VARCHAR(15)
+);
+----->
+		3	3	09:03:37	CREATE TABLE SDEPT
+		 (
+		 DEPTNO CHAR(2),
+		 DEPTNAME VARCHAR(15)
+		 )	0 row(s) affected	0.031 sec
+ 
+---------------------------------------------------------------------
+3.
+INSERT INTO SDEPT VALUES
+('10', 'Development'),
+('20','Training');
+----->
+		3	4	09:04:52	INSERT INTO SDEPT VALUES
+		 ('10', 'Development'),
+		 ('20','Training')	2 row(s) affected
+		 Records: 2  Duplicates: 0  Warnings: 0	0.016 sec
+	 
+-----------------------------------------------------------------------
+4.
+INSERT INTO SEMP VALUES
+('0001','SUNIL',6000,'10',NULL),
+('0002','HIREN',8000,'20', NULL),
+('0003','ALI',4000,'10','0001');
+INSERT INTO SEMP VALUES
+('0004','GEORGE',6000,NULL, '0002');
+----->
+		3	5	09:08:05	INSERT INTO SEMP VALUES
+		 ('0001','SUNIL',6000,'10',NULL),
+		 ('0002','HIREN',8000,'20', NULL),
+		 ('0003','ALI',4000,'10','0001')	3 row(s) affected
+		 Records: 3  Duplicates: 0  Warnings: 0	0.000 sec
+		3	6	09:08:59	INSERT INTO SEMP VALUES
+		 ('0004','GEORGE',6000,NULL, '0002')	1 row(s) affected	0.000 sec
+
+----------------------------------------------------------------------------
+5.
+CREATE TABLE S
+(
+`S#` CHAR(3),                                         //S# and reserved word STATUS to be used as table name should be enclosed in ` `
+SNAME VARCHAR(20),
+`STATUS` TINYINT,
+CITY VARCHAR(15)
+);
+----->
+		3	12	09:39:35	CREATE TABLE S
+		 (
+		 `S#` CHAR(3),
+		 SNAME VARCHAR(20),
+		 `STATUS` TINYINT,
+		 CITY VARCHAR(15)
+		 )	0 row(s) affected	0.047 sec
+
+CREATE TABLE P
+(
+`P#` CHAR(3),
+PNAME VARCHAR(20),
+COLOR VARCHAR(15),
+WEIGHT FLOAT,
+CITY VARCHAR(15)
+);
+----->
+		3	13	09:43:54	CREATE TABLE P
+		 (
+		 `P#` CHAR(3),
+		 PNAME VARCHAR(20),
+		 COLOR VARCHAR(15),
+		 WEIGHT FLOAT,
+		 CITY VARCHAR(15)
+		 )	0 row(s) affected	0.032 sec
+		 
+CREATE TABLE J
+(
+`S#` CHAR(3),
+JNAME VARCHAR(20),
+CITY VARCHAR(15)
+);
+----->
+		3	14	09:47:16	CREATE TABLE J
+		 (
+		 `S#` CHAR(3),
+		 JNAME VARCHAR(20),
+		 CITY VARCHAR(15)
+		 )	0 row(s) affected	0.031 sec
+		 
+CREATE TABLE SPJ
+(
+`S#` CHAR(3),
+`P#` CHAR(3),
+`J#` CHAR(3),
+QTY INT
+);
+----->
+		3	18	10:11:47	CREATE TABLE SPJ
+		 (
+		 `S#` CHAR(3),
+		 `P#` CHAR(3),
+		 `J#` CHAR(3),
+		 QTY INT
+		 )	0 row(s) affected	0.031 sec
+		 
+---------------------------------------------------------
+INSERT INTO S (`S#`, SNAME, `STATUS`, CITY) VALUES
+('S1', 'SUP 1', 10 ,'LONDON'),
+('S2', 'SUP 2', 10,'PARIS'),
+('S3', 'SUP 3', 40,'ATHENS'),
+('S4', 'SUP 4', 10,'BERLIN'),
+('S5', 'SUP 1', 20 ,'LONDON'),
+('S6', 'SUP 3', 50,'ATHENS'),
+('S7', 'SUP 2', 30,'PARIS'),
+('S8', 'SUP 1', 10 ,'LONDON'),
+('S9', 'SUP 4', 30,'BERLIN'),
+('S10', 'SUP 3', 10,'ATHENS');
+----->
+	3	19	10:19:10	INSERT INTO S (`S#`, SNAME, `STATUS`, CITY) VALUES
+	 10 row(s) affected
+	 Records: 10  Duplicates: 0  Warnings: 0	0.016 sec
+	 
+
+INSERT INTO P (`P#`, PNAME, COLOR, WEIGHT, CITY) VALUES
+('P1', 'PRT 1', 'BLUE',2.5 , 'ATHENS'),
+('P2', 'PRT 2', 'RED', 1 , 'PARIS'),
+('P3', 'PRT 3', 'YELLOW', 3.25 , 'LONDON'),
+('P4', 'PRT 1', 'GREEN', 0.5, 'PARIS'),
+('P5', 'PRT 4', 'WHITE', 4, 'ATHENS'),
+('P6', 'PRT 5', 'BLUE',2.5 , 'BERLIN'),
+('P7', 'PRT 11', 'YELLOW', 7.1 , 'PARIS'),
+('P8', 'PRT 5', 'BLACK',2 , 'BERLIN'),
+('P9', 'PRT 7', 'RED', 3.5, 'ATHENS'),
+('P10', 'PRT 10', 'BLUE', 4, 'LONDON');
+----->
+	3	24	10:28:14	INSERT INTO P (`P#`, PNAME, COLOR, WEIGHT, CITY) VALUES
+	 10 row(s) affected
+	 Records: 10  Duplicates: 0  Warnings: 0	0.000 sec
+	 
+	 
+INSERT INTO J VALUES
+('J1', 'PROJ 1', 'LONDON'),
+('J2', 'PROJ 2', 'ATHENS'),
+('J3', 'PROJ 3', 'PARIS'),
+('J4', 'PROJ 4', 'BERLIN'),
+('J5', 'PROJ 6', 'BERLIN'),
+('J6', 'PROJ 5', 'LONDON');
+----->
+		3	26	10:32:31	INSERT INTO J VALUES
+		 6 row(s) affected
+		 Records: 6  Duplicates: 0  Warnings: 0	0.016 sec
+		 
+--------------------------------------------------------------------------------------------
+5.Display all the data from the S table.
+SELECT * FROM S;
+----->
+		+------+-------+--------+--------+
+		| S#   | SNAME | STATUS | CITY   |
+		+------+-------+--------+--------+
+		| S1   | SUP 1 |     10 | LONDON |
+		| S2   | SUP 2 |     10 | PARIS  |
+		| S3   | SUP 3 |     40 | ATHENS |
+		| S4   | SUP 4 |     10 | BERLIN |
+		| S5   | SUP 1 |     20 | LONDON |
+		| S6   | SUP 3 |     50 | ATHENS |
+		| S7   | SUP 2 |     30 | PARIS  |
+		| S8   | SUP 1 |     10 | LONDON |
+		| S9   | SUP 4 |     30 | BERLIN |
+		| S10  | SUP 3 |     10 | ATHENS |
+		+------+-------+--------+--------+
+		10 rows in set (0.00 sec)
+		
+--------------------------------------------------------------------------------------------
+6. Display only the S# and SNAME fields from the S table.
+SELECT `S#`, SNAME FROM S;
+----->
+		+------+-------+
+		| S#   | SNAME |
+		+------+-------+
+		| S1   | SUP 1 |
+		| S2   | SUP 2 |
+		| S3   | SUP 3 |
+		| S4   | SUP 4 |
+		| S5   | SUP 1 |
+		| S6   | SUP 3 |
+		| S7   | SUP 2 |
+		| S8   | SUP 1 |
+		| S9   | SUP 4 |
+		| S10  | SUP 3 |
+		+------+-------+
+		10 rows in set (0.00 sec)
+		
+----------------------------------------------------------------------------------------
+7. Display the PNAME and COLOR from the P table for the CITY=”London”.
+SELECT PNAME, COLOR FROM P
+WHERE CITY="LONDON";
+----->
+		PRT 3	YELLOW
+		PRT 10	BLUE
+		
+------------------------------------------------------------------------------------------
+8. Display all the Suppliers from London.
+SELECT * FROM S WHERE CITY="LONDON";
+----->
+		+--------+--------+
+		| PNAME  | COLOR  |
+		+--------+--------+
+		| PRT 3  | YELLOW |
+		| PRT 10 | BLUE   |
+		+--------+--------+
+		2 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------
+9. Display all the Suppliers from Paris or Athens.
+SELECT * FROM S WHERE CITY="PARIS" OR CITY="ATHENS";
+----->
+		+------+-------+--------+--------+
+		| S#   | SNAME | STATUS | CITY   |
+		+------+-------+--------+--------+
+		| S2   | SUP 2 |     10 | PARIS  |
+		| S3   | SUP 3 |     40 | ATHENS |
+		| S6   | SUP 3 |     50 | ATHENS |
+		| S7   | SUP 2 |     30 | PARIS  |
+		| S10  | SUP 3 |     10 | ATHENS |
+		+------+-------+--------+--------+
+		5 rows in set (0.00 sec)
+		
+--------------------------------------------------------------------------------------------
+10. Display all the Projects in Athens.
+SELECT * FROM P WHERE CITY="ATHENS";
+----->
+		+------+-------+-------+--------+--------+
+		| P#   | PNAME | COLOR | WEIGHT | CITY   |
+		+------+-------+-------+--------+--------+
+		| P1   | PRT 1 | BLUE  |    2.5 | ATHENS |
+		| P5   | PRT 4 | WHITE |      4 | ATHENS |
+		| P9   | PRT 7 | RED   |    3.5 | ATHENS |
+		+------+-------+-------+--------+--------+
+		3 rows in set (0.00 sec)
+		
+---------------------------------------------------------------------------------------------
+11. Display all the Partnames with the weight between 2 and 4 (inclusive of both).
+SELECT PNAME FROM P WHERE WEIGHT>=2 AND WEIGHT <=4;
+----->
+		+--------+
+		| PNAME  |
+		+--------+
+		| PRT 1  |
+		| PRT 3  |
+		| PRT 4  |
+		| PRT 5  |
+		| PRT 5  |
+		| PRT 7  |
+		| PRT 10 |
+		+--------+
+		7 rows in set (0.00 sec)
+		
+---------------------------------------------------------------------------------------------
+12. Display all the Suppliers with a Status greater than or equal to 20.
+SELECT SNAME FROM S WHERE `STATUS`>=20;
+----->
+		+-------+
+		| SNAME |
+		+-------+
+		| SUP 3 |
+		| SUP 1 |
+		| SUP 3 |
+		| SUP 2 |
+		| SUP 4 |
+		+-------+
+		5 rows in set (0.00 sec)
+		
+--------------------------------------------------------------------------------------------
+13. Display all the Suppliers except the Suppliers from London.
+SELECT SNAME FROM S WHERE CITY != 'LONDON';
+----->
+		+-------+
+		| SNAME |
+		+-------+
+		| SUP 2 |
+		| SUP 3 |
+		| SUP 4 |
+		| SUP 3 |
+		| SUP 2 |
+		| SUP 4 |
+		| SUP 3 |
+		+-------+
+		7 rows in set (0.00 sec)
+		
+--------------------------------------------------------------------------------------------
+14. Display only the Cities from where the Suppliers come from.
+SELECT DISTINCT CITY FROM S;
+----->
+		+--------+
+		| CITY   |
+		+--------+
+		| LONDON |
+		| PARIS  |
+		| ATHENS |
+		| BERLIN |
+		+--------+
+		4 rows in set (0.01 sec)
+		
+---------------------------------------------------------------------------------------------
+15. Assuming that the Part Weight is in GRAMS, display the same in MILLIGRAMS and KILOGRAMS.
+SELECT WEIGHT, WEIGHT*1000 AS "WEIGHT IN MILLI-GRAMS" FROM P; 
+----->
+		+--------+-----------------------+
+		| WEIGHT | WEIGHT IN MILLI-GRAMS |
+		+--------+-----------------------+
+		|    2.5 |                  2500 |
+		|      1 |                  1000 |
+		|   3.25 |                  3250 |
+		|    0.5 |                   500 |
+		|      4 |                  4000 |
+		|    2.5 |                  2500 |
+		|    7.1 |     7099.999904632568 |
+		|      2 |                  2000 |
+		|    3.5 |                  3500 |
+		|      4 |                  4000 |
+		+--------+-----------------------+
+		10 rows in set (0.01 sec)
+
+SELECT WEIGHT, WEIGHT/1000 AS "WEIGHT IN KG" FROM P;
+----->
+		2.5		2500
+		1		1000
+		3.25	3250
+		0.5		500
+		4		4000
+		2.5		2500
+		7.1		7099.999904632568
+		2		2000
+		3.5		3500
+		4		4000
+		
+SELECT WEIGHT, WEIGHT*100 AS"WEIGHT IN MG", WEIGHT/1000 AS "WEIGHT IN KG" FROM P;
+----->
+		2.5		250					0.0025
+		1		100					0.001
+		3.25	325					0.00325
+		0.5		50					0.0005
+		4		400					0.004
+		2.5		250					0.0025
+		7.1		709.9999904632568	0.007099999904632569
+		2		200					0.002
+		3.5		350					0.0035
+		4		400					0.004
+		
+---------------------------------------------------------------------------------------------
+
+

@@ -1,0 +1,352 @@
+SELECT * FROM SPJ;
++------+------+------+------+
+| S#   | P#   | J#   | QTY  |
++------+------+------+------+
+| S1   | P2   | J1   |   50 |
+| S2   | P3   | J2   |   70 |
+| S3   | P4   | J3   |  100 |
+| S4   | P5   | J3   |  250 |
+| S5   | P5   | J4   |  450 |
+| S5   | P6   | J5   |  360 |
+| S5   | P7   | J6   |  500 |
+| S6   | P5   | J1   |  150 |
+| S7   | P7   | J2   |  220 |
+| S8   | P9   | J3   |  570 |
+| S9   | P10  | J4   |  300 |
+| S10  | P1   | J5   |   90 |
+| S10  | P1   | J6   |  290 |
+| S1   | P2   | J1   |  420 |
+| S3   | P5   | J2   |  300 |
++------+------+------+------+
+
+SELECT * FROM S;
++------+--------+--------+--------+
+| S#   | SNAME  | STATUS | CITY   |
++------+--------+--------+--------+
+| S1   | ARJUN  |     10 | LONDON |
+| S2   | ANIL   |     10 | PARIS  |
+| S3   | ANURAJ |     40 | ATHENS |
+| S4   | ATUL   |     10 | BERLIN |
+| S5   | VIPUL  |     20 | LONDON |
+| S6   | RAMESH |     50 | ATHENS |
+| S7   | SURESH |     30 | PARIS  |
+| S8   | GOVIND |     10 | LONDON |
+| S9   | SUBODH |     30 | BERLIN |
+| S10  | KAPIL  |     10 | ATHENS |
++------+--------+--------+--------+
+
+SELECT * FROM J;
++------+--------+--------+
+| J#   | JNAME  | CITY   |
++------+--------+--------+
+| J1   | PROJ 1 | LONDON |
+| J2   | PROJ 2 | ATHENS |
+| J3   | PROJ 3 | PARIS  |
+| J4   | PROJ 4 | BERLIN |
+| J5   | PROJ 6 | BERLIN |
+| J6   | PROJ 5 | LONDON |
++------+--------+--------+
+
+SELECT * FROM P;
++------+--------+--------+--------+--------+
+| P#   | PNAME  | COLOR  | WEIGHT | CITY   |
++------+--------+--------+--------+--------+
+| P1   | PRT 1  | BLUE   |    2.5 | ATHENS |
+| P10  | PRT 10 | BLUE   |      4 | LONDON |
+| P2   | PRT 2  | RED    |      1 | PARIS  |
+| P3   | PRT 3  | YELLOW |   3.25 | LONDON |
+| P5   | PRT 4  | WHITE  |      4 | ATHENS |
+| P6   | PRT 5  | BLUE   |    2.5 | BERLIN |
+| P4   | PRT 6  | GREEN  |    0.5 | PARIS  |
+| P9   | PRT 7  | RED    |    3.5 | ATHENS |
+| P8   | PRT 8  | BLACK  |      2 | BERLIN |
+| P7   | PRT 9  | YELLOW |    7.1 | PARIS  |
++------+--------+--------+--------+--------+
+
+ SELECT * FROM EMPT;
++-------+--------+------+--------+------+------+
+| EMPNO | ENAME  | SAL  | DEPTNO | JOB  | MGR  |
++-------+--------+------+--------+------+------+
+|     5 | THOMAS | 8000 |      2 | C    |    4 |
+|     4 | JACK   | 9000 |      2 | M    | NULL |
+|     1 | ARUN   | 8000 |      1 | M    |    4 |
+|     2 | ALI    | 7000 |      1 | C    |    1 |
+|     3 | KIRAN  | 3000 |      1 | C    |    1 |
++-------+--------+------+--------+------+------+
+
+ SELECT * FROM DEPT;
++--------+-------+------+
+| DEPTNO | DNAME | LOC  |
++--------+-------+------+
+|      1 | TRN   | MUM  |
+|      2 | EXP   | DLH  |
+|      3 | MKT   | CAL  |
++--------+-------+------+
+
+=========================================================================================================================
+1. Display the Supplier name and the Quantity sold.
+
+SELECT SNAME, SUM(QTY) FROM SPJ, S
+WHERE SPJ.`S#`=S.`S#`
+GROUP BY S.`S#`;
+----->
+		+--------+----------+
+		| SNAME  | SUM(QTY) |
+		+--------+----------+
+		| ARJUN  |      470 |
+		| ANIL   |       70 |
+		| ANURAJ |      400 |
+		| ATUL   |      250 |
+		| VIPUL  |     1310 |
+		| RAMESH |      150 |
+		| SURESH |      220 |
+		| GOVIND |      570 |
+		| SUBODH |      300 |
+		| KAPIL  |      380 |
+		+--------+----------+
+		10 rows in set (0.00 sec)
+		
+======================================================================================================
+2. Display the Part name and Quantity sold.
+
+SELECT PNAME, SUM(QTY) "TOTAL QTY" FROM SPJ, P
+WHERE P.`P#`=SPJ.`P#`
+GROUP BY P.`P#`
+ORDER BY PNAME;
+----->
+		+--------+-----------+
+		| PNAME  | TOTAL QTY |
+		+--------+-----------+
+		| PRT 1  |       380 |
+		| PRT 10 |       300 |
+		| PRT 2  |       470 |
+		| PRT 3  |        70 |
+		| PRT 4  |      1150 |
+		| PRT 5  |       360 |
+		| PRT 6  |       100 |
+		| PRT 7  |       570 |
+		| PRT 9  |       720 |
+		+--------+-----------+
+		9 rows in set (0.00 sec)	
+
+========================================================================================================
+3. Display the Project name and Quantity sold.
+
+SELECT JNAME , SUM(QTY) FROM SPJ, J
+WHERE SPJ.`J#`=J.`J#`
+GROUP BY J.`J#`
+ORDER BY JNAME;
+----->
+		+--------+----------+
+		| JNAME  | SUM(QTY) |
+		+--------+----------+
+		| PROJ 1 |      620 |
+		| PROJ 2 |      590 |
+		| PROJ 3 |      920 |
+		| PROJ 4 |      750 |
+		| PROJ 5 |      790 |
+		| PROJ 6 |      450 |
+		+--------+----------+
+		6 rows in set (0.00 sec)
+		
+=========================================================================================================
+4. Display the Supplier name, Part name, Project name and Quantity sold.
+
+SELECT SNAME, PNAME, JNAME, QTY FROM SPJ, S, P, J
+WHERE SPJ.`J#`=J.`J#`
+AND SPJ.`S#`=S.`S#`
+AND SPJ.`P#`=P.`P#`
+ORDER BY SNAME, PNAME, JNAME;
+----->
+		+--------+--------+--------+------+
+		| SNAME  | PNAME  | JNAME  | QTY  |
+		+--------+--------+--------+------+
+		| ANIL   | PRT 3  | PROJ 2 |   70 |
+		| ANURAJ | PRT 4  | PROJ 2 |  300 |
+		| ANURAJ | PRT 6  | PROJ 3 |  100 |
+		| ARJUN  | PRT 2  | PROJ 1 |   50 |
+		| ARJUN  | PRT 2  | PROJ 1 |  420 |
+		| ATUL   | PRT 4  | PROJ 3 |  250 |
+		| GOVIND | PRT 7  | PROJ 3 |  570 |
+		| KAPIL  | PRT 1  | PROJ 5 |  290 |
+		| KAPIL  | PRT 1  | PROJ 6 |   90 |
+		| RAMESH | PRT 4  | PROJ 1 |  150 |
+		| SUBODH | PRT 10 | PROJ 4 |  300 |
+		| SURESH | PRT 9  | PROJ 2 |  220 |
+		| VIPUL  | PRT 4  | PROJ 4 |  450 |
+		| VIPUL  | PRT 5  | PROJ 6 |  360 |
+		| VIPUL  | PRT 9  | PROJ 5 |  500 |
+		+--------+--------+--------+------+
+		15 rows in set (0.00 sec)
+		
+===========================================================================================================
+5. Display the Supplier name, Supplying Parts to a Project in the same City.
+
+SELECT SNAME, PNAME, J.CITY FROM S, P, SPJ, J
+WHERE SPJ.`P#`=P.`P#` AND SPJ.`S#`=S.`S#` AND SPJ.`J#`=J.`J#`
+AND J.CITY IN
+(SELECT DISTINCT CITY FROM J)
+ORDER BY CITY, SNAME, PNAME;
+----->
+		+--------+--------+--------+
+		| SNAME  | PNAME  | CITY   |
+		+--------+--------+--------+
+		| ANIL   | PRT 3  | ATHENS |
+		| ANURAJ | PRT 4  | ATHENS |
+		| SURESH | PRT 9  | ATHENS |
+		| KAPIL  | PRT 1  | BERLIN |
+		| SUBODH | PRT 10 | BERLIN |
+		| VIPUL  | PRT 4  | BERLIN |
+		| VIPUL  | PRT 5  | BERLIN |
+		| ARJUN  | PRT 2  | LONDON |
+		| ARJUN  | PRT 2  | LONDON |
+		| KAPIL  | PRT 1  | LONDON |
+		| RAMESH | PRT 4  | LONDON |
+		| VIPUL  | PRT 9  | LONDON |
+		| ANURAJ | PRT 6  | PARIS  |
+		| ATUL   | PRT 4  | PARIS  |
+		| GOVIND | PRT 7  | PARIS  |
+		+--------+--------+--------+
+		15 rows in set (0.00 sec)
+		
+=============================================================================================================
+6. Display the Part name that is ‘Red’ is color, and the Quantity sold.
+
+SELECT PNAME, SUM(QTY) FROM SPJ, P
+WHERE P.`P#`=SPJ.`P#`
+AND P.`P#` 
+AND COLOR='RED'
+GROUP BY PNAME;
+----->
+		+-------+----------+
+		| PNAME | SUM(QTY) |
+		+-------+----------+
+		| PRT 2 |      470 |
+		| PRT 7 |      570 |
+		+-------+----------+
+		2 rows in set (0.00 sec)
+		
+=============================================================================================================
+7. Display all the Quantity sold by Suppliers with the Status = 20.
+
+SELECT SNAME, SUM(QTY) FROM SPJ, S
+WHERE SPJ.`S#`=S.`S#` 
+AND `STATUS`=20
+GROUP BY SNAME;
+----->
+		+-------+----------+
+		| SNAME | SUM(QTY) |
+		+-------+----------+
+		| VIPUL |     1310 |
+		+-------+----------+
+		1 row in set (0.00 sec)
+
+Display all the Quantity sold by Suppliers with the Status = 10.
+
+SELECT SNAME, SUM(QTY) FROM SPJ, S
+WHERE SPJ.`S#`=S.`S#` 
+AND `STATUS`=10
+GROUP BY SNAME;
+----->
+		+--------+----------+
+		| SNAME  | SUM(QTY) |
+		+--------+----------+
+		| ARJUN  |      470 |
+		| ANIL   |       70 |
+		| ATUL   |      250 |
+		| GOVIND |      570 |
+		| KAPIL  |      380 |
+		+--------+----------+
+		5 rows in set (0.00 sec)
+		
+=========================================================================================================
+8. Display all the Parts and Quantity with a Weight > 1.4.
+
+SELECT PNAME, SUM(QTY) FROM SPJ, P
+WHERE SPJ.`P#`=P.`P#`
+AND WEIGHT>1.4
+GROUP BY PNAME
+ORDER BY PNAME;
+----->
+		+--------+----------+
+		| PNAME  | SUM(QTY) |
+		+--------+----------+
+		| PRT 1  |      380 |
+		| PRT 10 |      300 |
+		| PRT 3  |       70 |
+		| PRT 4  |     1150 |
+		| PRT 5  |      360 |
+		| PRT 7  |      570 |
+		| PRT 9  |      720 |
+		+--------+----------+
+		7 rows in set (0.00 sec)
+		
+========================================================================================================
+9. Display all the Project names and City, which has bought more than 500 Parts.
+
+SELECT JNAME, CITY, QTY FROM SPJ, J
+WHERE J.`J#`=SPJ.`J#`
+AND QTY>500
+ORDER BY JNAME;
+----->
+		+--------+-------+------+
+		| JNAME  | CITY  | QTY  |
+		+--------+-------+------+
+		| PROJ 3 | PARIS |  570 |
+		+--------+-------+------+
+		1 row in set (0.00 sec)
+
+SELECT JNAME, CITY, QTY FROM SPJ, J
+WHERE J.`J#`=SPJ.`J#`
+AND QTY>400
+ORDER BY JNAME;
+----->
+		+--------+--------+------+
+		| JNAME  | CITY   | QTY  |
+		+--------+--------+------+
+		| PROJ 1 | LONDON |  420 |
+		| PROJ 3 | PARIS  |  570 |
+		| PROJ 4 | BERLIN |  450 |
+		| PROJ 5 | LONDON |  500 |
+		+--------+--------+------+
+		4 rows in set (0.00 sec)
+
+=========================================================================================================
+10. Display all the Part names and Quantity sold that have a Weight less than 1.5.
+
+SELECT PNAME, SUM(QTY) FROM SPJ, P
+WHERE P.`P#`=SPJ.`P#`
+AND WEIGHT<1.5
+GROUP BY PNAME
+ORDER BY PNAME;
+----->
+		+-------+----------+
+		| PNAME | SUM(QTY) |
+		+-------+----------+
+		| PRT 2 |      470 |
+		| PRT 6 |      100 |
+		+-------+----------+
+		2 rows in set (0.00 sec)
+		
+==========================================================================================================
+11. Display all the Employee names and the name of their Managers.
+
+SELECT A.ENAME AS EMPLOYEE, B.ENAME AS MANAGER FROM EMPT A, EMPT B
+WHERE A.MGR=B.EMPNO;
+----->
+		+----------+---------+
+		| EMPLOYEE | MANAGER |
+		+----------+---------+
+		| THOMAS   | JACK    |
+		| ARUN     | JACK    |
+		| ALI      | ARUN    |
+		| KIRAN    | ARUN    |
+		+----------+---------+
+		4 rows in set (0.00 sec)
+	
+==============================================================================================================
+
+
+
+
+

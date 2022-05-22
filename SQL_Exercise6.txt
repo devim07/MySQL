@@ -1,0 +1,146 @@
+1. Display all the Suppliers with the same Status as the supplier, ‘ARJUN’.
+
+SELECT SNAME FROM S
+WHERE `STATUS`=
+(SELECT `STATUS` FROM S
+WHERE SNAME='ARJUN');
+----->
+		+--------+
+		| SNAME  |
+		+--------+
+		| ARJUN  |
+		| ANIL   |
+		| ATUL   |
+		| GOVIND |
+		| KAPIL  |
+		+--------+
+		5 rows in set (0.00 sec)
+		
+==============================================================================================================
+2. Display all the Employees in the same department as the employee ‘MILLER’.
+
+
+
+
+
+===============================================================================================================
+3. Display all the Parts which have more Weight than all the Red parts.
+
+SELECT * FROM P
+WHERE WEIGHT >
+(SELECT MAX(WEIGHT) FROM P
+WHERE COLOR='RED');
+----->
+		+------+--------+--------+--------+--------+
+		| P#   | PNAME  | COLOR  | WEIGHT | CITY   |
+		+------+--------+--------+--------+--------+
+		| P5   | PRT 4  | WHITE  |      4 | ATHENS |
+		| P7   | PRT 9  | YELLOW |    7.1 | PARIS  |
+		| P10  | PRT 10 | BLUE   |      4 | LONDON |
+		+------+--------+--------+--------+--------+
+		3 rows in set (0.00 sec)
+		
+=================================================================================================================
+4. Display all the Projects going on in the same city as the project ‘PROJ 4’.
+
+SELECT * FROM J 
+WHERE CITY=
+(SELECT CITY FROM J
+WHERE JNAME='PROJ 4');
+----->
+		+------+--------+--------+
+		| J#   | JNAME  | CITY   |
+		+------+--------+--------+
+		| J4   | PROJ 4 | BERLIN |
+		| J5   | PROJ 6 | BERLIN |
+		+------+--------+--------+
+		2 rows in set (0.00 sec)
+		
+==================================================================================================================
+5. Display all the Parts with Weight less than all the Green parts.
+
+SELECT * FROM P
+WHERE WEIGHT<
+(SELECT MIN(WEIGHT) FROM P
+WHERE COLOR='GREEN');
+----->
+		Empty set (0.00 sec)
+		
+SELECT * FROM P
+WHERE WEIGHT<
+(SELECT MIN(WEIGHT) FROM P
+WHERE COLOR='BLUE');		
+----->
+		+------+-------+-------+--------+--------+
+		| P#   | PNAME | COLOR | WEIGHT | CITY   |
+		+------+-------+-------+--------+--------+
+		| P2   | PRT 2 | RED   |      1 | PARIS  |
+		| P4   | PRT 6 | GREEN |    0.5 | PARIS  |
+		| P8   | PRT 8 | BLACK |      2 | BERLIN |
+		+------+-------+-------+--------+--------+
+		3 rows in set (0.00 sec)
+		
+===================================================================================================================
+6. Display the name of the Supplier who has sold the maximum Quantity (in one sale).
+
+SELECT SNAME FROM SPJ, S
+WHERE S.`S#`=SPJ.`S#`
+AND QTY=
+(SELECT MAX(QTY) FROM SPJ);
+----->
+		+--------+
+		| SNAME  |
+		+--------+
+		| GOVIND |
+		+--------+
+		1 row in set (0.00 sec)
+		
+===================================================================================================================
+7. Display the name of the Employee with the minimum Salary.
+		
+SELECT NAME FROM EMP
+WHERE SAL=
+(SELECT MIN(SAL) FROM EMP);
+----->
+		+------+
+		| NAME |
+		+------+
+		| Devi |
+		+------+
+		1 row in set (0.00 sec)
+
+====================================================================================================================
+8. Display the name of the Supplier who has sold the maximum overall Quantity (sum of Sales).
+
+SELECT SNAME, SUM(QTY) FROM SPJ, S
+WHERE SPJ.`S#`=S.`S#`
+GROUP BY SNAME
+HAVING SUM(QTY)=
+(SELECT MAX(SUM) FROM
+(SELECT SUM(QTY) AS "SUM" FROM SPJ
+GROUP BY SPJ.`S#`)AS TEMP);
+----->
+		+-------+----------+
+		| SNAME | SUM(QTY) |
+		+-------+----------+
+		| VIPUL |     1310 |
+		+-------+----------+
+		1 row in set (0.00 sec)
+		
+======================================================================================================================
+9. Display the name of the Department with the maximum number of Employees.
+
+SELECT DNAME , COUNT(EMPNO) AS "TOTAL EMP" FROM DEPT, EMPT
+WHERE DEPT.DEPTNO=EMPT.DEPTNO
+GROUP BY DNAME
+HAVING COUNT(EMPNO)=
+(SELECT MAX(TOTAL) FROM
+(SELECT COUNT(EMPNO) AS "TOTAL" FROM EMPT
+GROUP BY DEPTNO) AS TEMP);
+----->
+		+-------+-----------+
+		| DNAME | TOTAL EMP |
+		+-------+-----------+
+		| TRN   |         3 |
+		+-------+-----------+
+		1 row in set (0.00 sec)
